@@ -59,7 +59,9 @@ class _PlantsHomeScreenState extends State<PlantsHomeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Center(child: Image.asset(plant.image)),
+                          Center(child: Hero(
+                              tag: plant.image,
+                              child: Image.asset(plant.image))),
                           SizedBox(height: 5),
                           Text(
                             plant.name,
