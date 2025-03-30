@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plant_shop_ui/cors/constants.dart';
 import 'package:flutter_plant_shop_ui/models/plant_model.dart';
+import 'package:flutter_plant_shop_ui/screens/plant_details_page.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class PlantsHomeScreen extends StatefulWidget {
@@ -21,6 +22,7 @@ class _PlantsHomeScreenState extends State<PlantsHomeScreen> {
           children: [
             searchField(),
             MasonryGridView(
+              padding: const EdgeInsets.symmetric(horizontal: 22),
               crossAxisSpacing: 25,
               mainAxisSpacing: 25,
               shrinkWrap: true,
@@ -40,7 +42,14 @@ class _PlantsHomeScreenState extends State<PlantsHomeScreen> {
                 ),
                 for (var plant in plants)
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PlantDetailsPage(plant: plant),
+                        ),
+                      );
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -48,7 +57,52 @@ class _PlantsHomeScreenState extends State<PlantsHomeScreen> {
                       ),
                       padding: EdgeInsets.all(15),
                       child: Column(
-                        children: [Center(child: Image.asset(plant.image))],
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(child: Image.asset(plant.image)),
+                          SizedBox(height: 5),
+                          Text(
+                            plant.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              height: 1,
+                            ),
+                          ),
+
+                          if (plant.category != null)
+                            Text(
+                              plant.category!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey,
+                              ),
+                            ),
+
+                          Row(
+                            children: [
+                              Text(
+                                "\$${plant.price}",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: -1,
+                                ),
+                              ),
+                              Spacer(),
+                              CircleAvatar(
+                                radius: 18,
+                                backgroundColor: Colors.black,
+                                child: Icon(
+                                  Icons.favorite,
+                                  color: Colors.white,
+                                  size: 22,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -111,7 +165,12 @@ class _PlantsHomeScreenState extends State<PlantsHomeScreen> {
   AppBar headerPart() {
     return AppBar(
       backgroundColor: myBackgroundColor,
-      leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios)),
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(Icons.arrow_back_ios),
+      ),
       centerTitle: true,
       title: Text(
         "Search Products",
